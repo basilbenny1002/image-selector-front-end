@@ -23,11 +23,19 @@ export default function Home() {
   const [uploadProgress, setUploadProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [processingStatus, setProcessingStatus] = useState("")
+  const [processingData, setProcessingData] = useState<{
+    stage: number
+    percentage: number
+    eta_seconds: number | null
+    status: string
+  } | null>(null)
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [processingStep, setProcessingStep] = useState<"upload" | "process" | "download">("upload")
   const [currentUploadFile, setCurrentUploadFile] = useState<string>("")
+
+  const uploadLimitMB = Number.parseInt(process.env.NEXT_PUBLIC_UPLOAD_LIMIT_MB || "250", 10)
+  const uploadLimitBytes = uploadLimitMB * 1024 * 1024
 
   // Check backend health on mount
   useEffect(() => {
@@ -79,8 +87,8 @@ export default function Home() {
       }
 
       totalSize += file.size
-      if (totalSize > 250 * 1024 * 1024) {
-        setError("Total upload size exceeds 250MB limit")
+      if (totalSize > uploadLimitBytes) {
+        setError(`Total upload size exceeds ${uploadLimitMB}MB limit`)
         break
       }
 
@@ -138,39 +146,60 @@ export default function Home() {
 
   const processImages = async () => {
     setIsProcessing(true)
-    setProcessingStatus("Starting image processing...")
+    setProcessingData(null)
     setError(null)
     setProcessingStep("process")
 
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"
 
     try {
-      // Poll progress endpoint
+      // Send POST request to /process endpoint
+      const processResponse = await fetch(`${backendUrl}/process`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          user_id: userId,
+          similarity: "0.87",
+          use_aesthetics: "true",
+        }).toString(),
+      })
+
+      if (!processResponse.ok) {
+        throw new Error("Failed to start image processing")
+      }
+
+      // Start polling progress endpoint
+      let isCompleted = false
       const progressInterval = setInterval(async () => {
         try {
-          const response = await fetch(`${backendUrl}/progress/${userId}`)
-          const data = await response.json()
-          setProcessingStatus(`Processing: ${data.progress}% complete`)
+          const progressResponse = await fetch(`${backendUrl}/progress/${userId}`)
+          const data = await progressResponse.json()
+
+          setProcessingData(data)
+
+          if (data.status === "completed") {
+            isCompleted = true
+            clearInterval(progressInterval)
+          }
         } catch (err) {
           console.error("Failed to fetch progress:", err)
         }
       }, 1000)
 
-      // Wait a bit then check for download
+      // Wait for completion
+      await new Promise((resolve) => {
+        const checkCompletion = setInterval(() => {
+          if (isCompleted) {
+            clearInterval(checkCompletion)
+            clearInterval(progressInterval)
+            resolve(null)
+          }
+        }, 100)
+      })
+
       await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Try to get download URL
-      const downloadResponse = await fetch(`${backendUrl}/download/${userId}`)
-      const downloadData = await downloadResponse.json()
-
-      clearInterval(progressInterval)
-
-      if (downloadData.download_url) {
-        setDownloadUrl(downloadData.download_url)
-        setProcessingStatus("Processing complete!")
-      } else if (downloadData.error) {
-        throw new Error(downloadData.error)
-      }
 
       setIsProcessing(false)
       setProcessingStep("download")
@@ -181,14 +210,29 @@ export default function Home() {
     }
   }
 
-  const downloadResults = () => {
-    if (downloadUrl) {
+  const downloadResults = async () => {
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"
+      const response = await fetch(`${backendUrl}/download/${userId}`)
+
+      if (!response.ok) {
+        throw new Error("Failed to download results")
+      }
+
+      // Get the blob from response
+      const blob = await response.blob()
+
+      // Create a download link
+      const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
-      link.href = downloadUrl
-      link.download = "processed_images.zip"
+      link.href = url
+      link.download = `${userId}_output.zip`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to download results")
     }
   }
 
@@ -196,7 +240,7 @@ export default function Home() {
     setSelectedFiles([])
     setDownloadUrl(null)
     setUploadProgress(0)
-    setProcessingStatus("")
+    setProcessingData(null)
     setProcessingStep("upload")
     setError(null)
     setCurrentUploadFile("")
@@ -295,15 +339,10 @@ export default function Home() {
                     </div>
                   )}
 
-                  {isProcessing && <ProcessingStatus status={processingStatus} />}
+                  {isProcessing && processingData && <ProcessingStatus processingData={processingData} />}
 
-                  {processingStep === "download" && downloadUrl && (
-                    <DownloadManager
-                      downloadUrl={downloadUrl}
-                      onDownload={downloadResults}
-                      onReset={resetWorkflow}
-                      isProcessing={isProcessing}
-                    />
+                  {processingStep === "download" && (
+                    <DownloadManager onDownload={downloadResults} onReset={resetWorkflow} isProcessing={isProcessing} />
                   )}
                 </Card>
               </div>
@@ -317,7 +356,7 @@ export default function Home() {
                   <ul className="space-y-3 text-sm text-gray-600">
                     <li>
                       <span className="block text-xs text-gray-500 mb-1">Max upload</span>
-                      <span className="font-semibold text-gray-800">250MB</span>
+                      <span className="font-semibold text-gray-800">{uploadLimitMB}MB</span>
                     </li>
                     <li>
                       <span className="block text-xs text-gray-500 mb-1">Supported formats</span>
@@ -408,9 +447,9 @@ export default function Home() {
             {/* Left: About */}
             <div>
               <p className="text-sm text-gray-600 leading-relaxed">
-                <span className="font-semibold text-gray-800">Image Selecter</span> is an open-source project 
-                <span className="font-semibold text-gray-800"></span> that helps you sort through large sets
-                of photos and find the best ones.
+                <span className="font-semibold text-gray-800">Image Selecter</span> is an open-source project
+                <span className="font-semibold text-gray-800"></span> that helps you sort through large sets of photos
+                and find the best ones.
               </p>
             </div>
 

@@ -15,6 +15,8 @@ export default function ImageUploadZone({ onFilesSelected, selectedCount }: Imag
   const fileInputRef = useRef<HTMLInputElement>(null)
   const folderInputRef = useRef<HTMLInputElement>(null)
 
+  const uploadLimitMB = Number.parseInt(process.env.NEXT_PUBLIC_UPLOAD_LIMIT_MB || "250", 10)
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(true)
@@ -95,7 +97,7 @@ export default function ImageUploadZone({ onFilesSelected, selectedCount }: Imag
           className="hidden"
         />
 
-        <p className="text-xs text-gray-500 mt-4">Max 250MB total • Supported: JPG, PNG, WebP, BMP, TIFF</p>
+        <p className="text-xs text-gray-500 mt-4">Max {uploadLimitMB}MB total • Supported: JPG, PNG, WebP, BMP, TIFF</p>
       </div>
     </div>
   )

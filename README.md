@@ -6,4 +6,3 @@ Front end repo for [Image Selector](https://github.com/basilbenny1002/Image-Sele
 
 
 **[Live here](https://vercel.com/basilgallery01-7624s-projects/v0-image-processing-website)**
-
