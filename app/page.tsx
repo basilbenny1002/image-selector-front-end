@@ -326,7 +326,7 @@ export default function Home() {
                   </ul>
                   <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
                     <p className="text-xs text-gray-500">
-                      For larger batches, check out the{" "}
+                      For larger batches, check out this{" "}
                       <a
                         href="https://github.com/basilbenny1002/Image-Selecter"
                         target="_blank"
@@ -408,8 +408,8 @@ export default function Home() {
             {/* Left: About */}
             <div>
               <p className="text-sm text-gray-600 leading-relaxed">
-                <span className="font-semibold text-gray-800">Image Selecter</span> is an open-source project by{" "}
-                <span className="font-semibold text-gray-800">Basil Benny</span> that helps you sort through large sets
+                <span className="font-semibold text-gray-800">Image Selecter</span> is an open-source project 
+                <span className="font-semibold text-gray-800"></span> that helps you sort through large sets
                 of photos and find the best ones.
               </p>
             </div>
