@@ -464,7 +464,7 @@ export default function Home() {
                 basilbenny1002@gmail.com
               </a>
               <a
-                href="https://instagram.com/basil_benny12"
+                href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium transition-colors text-sm"
