@@ -8,7 +8,7 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Image Selecter - Deduplicate Your Photos",
+  title: "ImageDeduper - Deduplicate Your Photos",
   description: "Upload images, group duplicates, and download the best ones. Free online image deduplication tool.",
   generator: "v0.app",
 }

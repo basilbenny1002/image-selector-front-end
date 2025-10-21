@@ -256,7 +256,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-cyan-600 bg-clip-text text-transparent">
-                Image Selecter
+                ImageDeduper
               </h1>
             </div>
           </div>
@@ -318,11 +318,12 @@ export default function Home() {
 
                   {processingStep === "process" && !isProcessing && !downloadUrl && (
                     <div className="space-y-4">
-                      <StatusBadge
-                        status="success"
-                        label={`${selectedFiles.length} image(s) uploaded successfully`}
-                        message="Ready to process and deduplicate your images."
-                      />
+                      <div className="bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4">
+                        <p className="text-emerald-900 font-semibold text-base">
+                          ✓ {selectedFiles.length} image(s) uploaded successfully
+                        </p>
+                        <p className="text-emerald-700 text-sm mt-1">Ready to process and deduplicate your images.</p>
+                      </div>
                       <ProcessButton
                         onClick={processImages}
                         isLoading={isProcessing}
@@ -439,7 +440,7 @@ export default function Home() {
             {/* Left: About */}
             <div>
               <p className="text-sm text-gray-600 leading-relaxed">
-                <span className="font-semibold text-gray-800">Image Selecter</span> is an open-source project
+                <span className="font-semibold text-gray-800">ImageDeduper</span> is an open-source project
                 <span className="font-semibold text-gray-800"></span> that helps you sort through large sets of photos
                 and find the best ones.
               </p>
@@ -498,7 +499,7 @@ export default function Home() {
 
           <div className="border-t border-gray-200 pt-6">
             <p className="text-xs text-gray-500 text-center">
-              © 2025 Image Selecter. Open source project. Limited upload due to free Render server. All files deleted
+              © 2025 ImageDeduper. Open source project. Limited upload due to free Render server. All files deleted
               after download or page refresh.
             </p>
           </div>

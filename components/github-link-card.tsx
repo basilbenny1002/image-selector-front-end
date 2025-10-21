@@ -13,7 +13,7 @@ export default function GitHubLinkCard() {
         <div className="flex-1">
           <h3 className="font-semibold text-white mb-2">Open Source on GitHub</h3>
           <p className="text-sm text-slate-300 mb-4">
-            Image Selecter is open source. Contribute, report issues, or star the project on GitHub.
+            ImageDeduper is open source. Contribute, report issues, or star the project on GitHub.
           </p>
           <a
             href="https://github.com/basilbenny1002/Image-Selecter"
