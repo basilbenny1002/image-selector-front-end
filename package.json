@@ -1,5 +1,6 @@
 {
-  "name": "my-v0-project",
+  "name": "image-selector-front-end",
+  "author": "Basil Benny",
   "version": "0.1.0",
   "private": true,
   "scripts": {

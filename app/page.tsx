@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { AlertCircle, Upload, AlertTriangle, Mail, Instagram, Sparkles } from "lucide-react"
+import { AlertCircle, Upload, AlertTriangle, Mail, Instagram } from "lucide-react"
 import ImageUploadZone from "@/components/image-upload-zone"
 import BackendHealthCheck from "@/components/backend-health-check"
 import ProcessingStatus from "@/components/processing-status"
@@ -251,8 +251,8 @@ export default function Home() {
       <header className="border-b border-blue-100 bg-white/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-sm">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-sm text-white text-xl">
+              🖼️
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-cyan-600 bg-clip-text text-transparent">
@@ -267,7 +267,7 @@ export default function Home() {
       <div className="border-b border-blue-100 bg-gradient-to-r from-emerald-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <p className="text-base font-medium bg-gradient-to-r from-emerald-700 to-cyan-700 bg-clip-text text-transparent">
-            ✨ Upload photos → We find duplicates → Download the best ones
+             Upload photos → We find duplicates → Download the best ones
           </p>
         </div>
       </div>
@@ -361,7 +361,7 @@ export default function Home() {
                     <p className="text-xs text-gray-500">
                       For larger batches, check out this{" "}
                       <a
-                        href="https://github.com/basilbenny1002/Image-Selecter"
+                        href="https://github.com/basilbenny1002/ImageDeduper-backend?tab=readme-ov-file#cli-usage"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-emerald-600 hover:text-emerald-700 font-medium underline"
@@ -471,7 +471,7 @@ export default function Home() {
             <div className="flex flex-col gap-3">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Check Out on GitHub</p>
               <a
-                href="https://github.com/basilbenny1002/Image-Selecter"
+                href="https://github.com/basilbenny1002/image-selector-front-end"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors text-sm underline"
@@ -479,7 +479,7 @@ export default function Home() {
                 GitHub (Frontend)
               </a>
               <a
-                href="https://github.com/basilbenny1002/Image-Selecter-Backend"
+                href="https://github.com/basilbenny1002/ImageDeduper-backend"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors text-sm underline"
@@ -497,11 +497,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-gray-200 pt-6 space-y-1">
             <p className="text-xs text-gray-500 text-center">
               © 2025 ImageDeduper. Open source project. Limited upload due to free Render server. All files deleted
               after download or page refresh.
             </p>
+            <p className="text-xs text-gray-500 text-center">Made by Basil Benny</p>
           </div>
         </div>
       </footer>
