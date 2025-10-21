@@ -14,9 +14,8 @@ interface ProcessingStatusProps {
 
 export default function ProcessingStatus({ processingData }: ProcessingStatusProps) {
   const steps = [
-    { name: "Grouping similar images", description: "Finding and grouping duplicate images" },
-    { name: "Selecting best images", description: "Choosing highest quality from each group" },
-    { name: "Preparing download", description: "Creating ZIP archive" },
+    { name: "Grouping similar images", description: "Finding and grouping duplicate images", status: "indexing" },
+    { name: "Selecting best images", description: "Choosing highest quality from each group", status: "selecting" },
   ]
 
   const { stage, percentage, eta_seconds, status } = processingData
@@ -29,6 +28,8 @@ export default function ProcessingStatus({ processingData }: ProcessingStatusPro
     return `${minutes}m ${secs}s`
   }
 
+  const currentStepIndex = stage - 1
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -38,7 +39,7 @@ export default function ProcessingStatus({ processingData }: ProcessingStatusPro
 
       <div className="bg-green-50 rounded-lg p-4 border border-green-200">
         <p className="text-sm text-gray-600 font-medium mb-2">Current Stage:</p>
-        <p className="text-sm text-green-700">{steps[stage]?.name || "Processing..."}</p>
+        <p className="text-sm text-green-700">{steps[currentStepIndex]?.name || "Processing..."}</p>
       </div>
 
       <div className="space-y-2">
@@ -59,30 +60,34 @@ export default function ProcessingStatus({ processingData }: ProcessingStatusPro
         </div>
       </div>
 
-      <ProgressIndicator current={stage + 1} total={steps.length} label="Processing Steps" />
+      <ProgressIndicator current={stage} total={steps.length} label="Processing Steps" />
 
       <div className="space-y-3">
         {steps.map((step, index) => (
           <div
             key={index}
             className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
-              index <= stage ? "bg-green-50 border border-green-200" : "bg-gray-50 border border-gray-200"
+              index < currentStepIndex ? "bg-green-50 border border-green-200" : "bg-gray-50 border border-gray-200"
             }`}
           >
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-semibold ${
-                index < stage
+                index < currentStepIndex
                   ? "bg-green-600 text-white"
-                  : index === stage
+                  : index === currentStepIndex
                     ? "bg-blue-500 text-white animate-pulse"
                     : "bg-gray-300 text-gray-600"
               }`}
             >
-              {index < stage ? "✓" : index + 1}
+              {index < currentStepIndex ? "✓" : index + 1}
             </div>
             <div className="flex-1">
-              <p className={`text-sm font-medium ${index <= stage ? "text-gray-800" : "text-gray-600"}`}>{step.name}</p>
-              <p className={`text-xs ${index <= stage ? "text-gray-600" : "text-gray-500"}`}>{step.description}</p>
+              <p className={`text-sm font-medium ${index <= currentStepIndex ? "text-gray-800" : "text-gray-600"}`}>
+                {step.name}
+              </p>
+              <p className={`text-xs ${index <= currentStepIndex ? "text-gray-600" : "text-gray-500"}`}>
+                {step.description}
+              </p>
             </div>
           </div>
         ))}
