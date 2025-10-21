@@ -2,6 +2,7 @@
 
 import { Download, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 interface DownloadManagerProps {
   onDownload: () => void
@@ -10,6 +11,13 @@ interface DownloadManagerProps {
 }
 
 export default function DownloadManager({ onDownload, onReset, isProcessing }: DownloadManagerProps) {
+  const [hasDownloaded, setHasDownloaded] = useState(false)
+
+  const handleDownload = async () => {
+    setHasDownloaded(true)
+    await onDownload()
+  }
+
   return (
     <div className="space-y-4">
       <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
@@ -22,12 +30,16 @@ export default function DownloadManager({ onDownload, onReset, isProcessing }: D
 
       <div className="grid grid-cols-2 gap-3">
         <Button
-          onClick={onDownload}
-          disabled={isProcessing}
-          className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-semibold"
+          onClick={handleDownload}
+          disabled={isProcessing || hasDownloaded}
+          className={`text-white font-semibold ${
+            hasDownloaded
+              ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
+          }`}
         >
           <Download className="w-4 h-4 mr-2" />
-          Download
+          {hasDownloaded ? "Downloaded" : "Download"}
         </Button>
         <Button
           onClick={onReset}

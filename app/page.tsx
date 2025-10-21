@@ -272,20 +272,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        {enableBackendCheck && (
-          <BackendHealthCheck isReady={backendReady} isChecking={backendChecking} onRetry={checkBackendHealth} />
-        )}
+      {enableBackendCheck && backendChecking && (
+        <BackendHealthCheck isReady={backendReady} isChecking={backendChecking} onRetry={checkBackendHealth} />
+      )}
 
-        {enableBackendCheck && !backendReady && (
-          <div className="mt-8 text-center">
-            <p className="text-gray-500">Waiting for backend to be ready...</p>
-          </div>
-        )}
-
-        {backendReady && (
-          <>
+      {backendReady && (
+        <>
+          <div className="max-w-7xl mx-auto px-4 py-12">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12">
               {/* Upload Area - 3 columns */}
               <div className="lg:col-span-3">
@@ -426,20 +419,19 @@ export default function Home() {
                 </div>
               </Card>
             </div>
-          </>
-        )}
-
-        {/* Error Display */}
-        {error && (
-          <div className="fixed bottom-4 right-4 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3 max-w-md shadow-lg">
-            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-red-800 font-semibold">Error</p>
-              <p className="text-sm text-red-700 mt-1">{error}</p>
-            </div>
           </div>
-        )}
-      </div>
+        </>
+      )}
+
+      {error && (
+        <div className="fixed bottom-4 right-4 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3 max-w-md shadow-lg">
+          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-red-800 font-semibold">Error</p>
+            <p className="text-sm text-red-700 mt-1">{error}</p>
+          </div>
+        </div>
+      )}
 
       <footer className="border-t border-blue-100 bg-white/50 mt-16 py-12">
         <div className="max-w-7xl mx-auto px-4">
