@@ -487,7 +487,7 @@ export default function Home() {
                 GitHub (Backend)
               </a>
               <a
-                href="https://www.paypal.com/donate"
+                href="https://www.paypal.com/paypalme/basilbenny12"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white rounded-lg text-sm font-medium transition-colors mt-2"

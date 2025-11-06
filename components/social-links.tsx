@@ -31,7 +31,7 @@ export default function SocialLinks({ variant = "header", showLabels = false }: 
     {
       icon: <Heart className="w-5 h-5" />,
       label: "Donate",
-      href: "https://www.paypal.com/donate",
+      href: "https://www.paypal.com/paypalme/basilbenny12",
       color: "text-slate-300",
       hoverColor: "hover:text-red-400",
       title: "Support this project on PayPal",
