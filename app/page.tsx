@@ -371,7 +371,7 @@ export default function Home() {
                       .
                     </p>
                     <p className="text-xs text-gray-500">
-                      Running on free Render. All files deleted after download or refresh. We keep none of your data.
+                       All files deleted after download or refresh. We keep none of your data.
                     </p>
                   </div>
                 </Card>
@@ -499,7 +499,7 @@ export default function Home() {
 
           <div className="border-t border-gray-200 pt-6 space-y-1">
             <p className="text-xs text-gray-500 text-center">
-              © 2025 ImageDeduper. Open source project. Limited upload due to free Render server. All files deleted
+              © 2025 ImageDeduper. Open source project. All files deleted
               after download or page refresh.
             </p>
             <p className="text-xs text-gray-500 text-center">Made by Basil Benny</p>
