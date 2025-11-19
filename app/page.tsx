@@ -502,7 +502,6 @@ export default function Home() {
               © 2025 ImageDeduper. Open source project. All files deleted
               after download or page refresh.
             </p>
-            <p className="text-xs text-gray-500 text-center">y</p>
           </div>
         </div>
       </footer>
